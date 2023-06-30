@@ -26,8 +26,17 @@ def move_mouse(pid, duration):
     except psutil.NoSuchProcess:
         print("No process found for the specified PID.")
 
+def search_current_processes_for_info_of_name(process_name):
+    for proc in psutil.process_iter():
+        try:
+            if proc.name() == process_name:
+                return proc
+        except psutil.NoSuchProcess:
+            pass
+
 if __name__ == '__main__':
-    pid = int(input("Enter the PID: "))
+    # search the currently running desktop apps for the PID of "GeometryDash.exe"
+    pid = search_current_processes_for_info_of_name("GeometryDash.exe").pid
     duration = int(input("Enter the duration in milliseconds: "))
 
     move_mouse(pid, duration)
